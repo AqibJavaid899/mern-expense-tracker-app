@@ -1,5 +1,11 @@
+import Home from "./scenes/Home/Home";
+
 function App() {
-  return <div className="app">Hello There!</div>;
+  return (
+    <div className="app">
+      <Home />
+    </div>
+  );
 }
 
 export default App;
