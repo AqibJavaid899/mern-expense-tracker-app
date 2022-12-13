@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-import AddTransaction from "./components/AddTransaction";
-import TransactionList from "./components/TransactionList";
+import AddTransaction from "./useCases/AddTransaction";
+import TransactionsList from "./useCases/TransactionsList";
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,14 +13,14 @@ const Home = () => {
 
   const handleFetchTransactions = async () => {
     const response = await axios.get(
-      "http://localhost:8000/api/transaction/get",
+      `${process.env.REACT_APP_BACKEND_URL}transaction/get`,
     );
     setTransactions(response.data);
   };
 
   const createTransaction = async (data) => {
     const response = await axios.post(
-      "http://localhost:8000/api/transaction/create",
+      `${process.env.REACT_APP_BACKEND_URL}transaction/create`,
       data,
     );
     handleFetchTransactions();
@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div>
       <AddTransaction createTransaction={createTransaction} />
-      <TransactionList transactions={transactions} />
+      <TransactionsList transactions={transactions} />
     </div>
   );
 };
