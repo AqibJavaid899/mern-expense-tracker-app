@@ -34,6 +34,7 @@ const AddTransaction = ({ createTransaction }) => {
     e.preventDefault();
     const result = await createTransaction(form);
     setForm(initialState);
+    alert("Transaction is added to the Database.");
   };
 
   return (
