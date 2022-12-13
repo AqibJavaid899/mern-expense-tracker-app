@@ -39,7 +39,7 @@ const AddTransaction = ({ createTransaction }) => {
   return (
     <Card
       sx={{
-        width: "80%",
+        width: "75%",
         margin: "4rem auto",
         padding: "0 0rem",
         height: "90px",

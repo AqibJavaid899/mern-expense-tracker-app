@@ -21,7 +21,7 @@ const TableHeader = styled(TableCell)({
 
 const TransactionsList = ({ transactions }) => {
   return (
-    <TableContainer sx={{ width: "80%", margin: "0 auto" }} component={Paper}>
+    <TableContainer sx={{ width: "75%", margin: "0 auto" }} component={Paper}>
       <Table size="small">
         {/* Table Header */}
         <TableHead>
