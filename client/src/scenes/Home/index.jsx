@@ -1,9 +1,10 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { fetchTransaction } from "../../utils/helperFunctions";
+import { Box } from "@mui/material";
+import axios from "axios";
 
 import AddTransaction from "./useCases/AddTransaction";
 import TransactionsList from "./useCases/TransactionsList";
+import { fetchTransaction } from "../../utils/helperFunctions";
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
@@ -37,7 +38,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <Box>
       <AddTransaction
         createTransaction={createTransaction}
         updateTransaction={updateTransaction}
@@ -48,7 +49,7 @@ const Home = () => {
         handleFetchTransactions={handleFetchTransactions}
         setUpdateTransactionForm={setUpdateTransactionForm}
       />
-    </div>
+    </Box>
   );
 };
 
