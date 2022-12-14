@@ -11,7 +11,9 @@ import {
 import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import moment from "moment";
+import axios from "axios";
+
+import { dateFormat } from "../../../utils/helperFunctions";
 
 const TableHeader = styled(TableCell)({
   backgroundColor: "#2196f3",
@@ -19,7 +21,31 @@ const TableHeader = styled(TableCell)({
   fontWeight: "bold",
 });
 
-const TransactionsList = ({ transactions }) => {
+const TransactionsList = ({
+  transactions,
+  handleFetchTransactions,
+  setUpdateTransactionForm,
+}) => {
+  const handleUpdateTransaction = (transaction) => {
+    setUpdateTransactionForm(transaction);
+  };
+
+  const handleDeleteTransaction = async (id) => {
+    if (window.confirm("Are you sure to delete the Transaction?")) {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}transaction/delete/${id}`,
+      );
+      reloadTransactions(response);
+    }
+  };
+
+  const reloadTransactions = (response) => {
+    if (response.statusText === "OK") {
+      window.alert(response.data.message);
+      handleFetchTransactions();
+    }
+  };
+
   return (
     <TableContainer sx={{ width: "75%", margin: "0 auto" }} component={Paper}>
       <Table size="small">
@@ -44,14 +70,20 @@ const TransactionsList = ({ transactions }) => {
               <TableCell align="center">{transaction.amount}</TableCell>
               <TableCell align="center">{transaction.description}</TableCell>
               <TableCell align="center">
-                {moment(transaction.date).format("DD-MM-YYYY")}
+                {dateFormat(transaction.date)}
               </TableCell>
+
+              {/* Action Buttons */}
               <TableCell align="center">
-                <IconButton>
-                  <EditIcon />
+                <IconButton
+                  onClick={() => handleUpdateTransaction(transaction)}
+                >
+                  <EditIcon color="primary" />
                 </IconButton>
-                <IconButton>
-                  <DeleteIcon />
+                <IconButton
+                  onClick={() => handleDeleteTransaction(transaction._id)}
+                >
+                  <DeleteIcon color="warning" />
                 </IconButton>
               </TableCell>
             </TableRow>

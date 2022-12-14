@@ -1,21 +1,20 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { fetchTransaction } from "../../utils/helperFunctions";
 
 import AddTransaction from "./useCases/AddTransaction";
 import TransactionsList from "./useCases/TransactionsList";
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
+  const [updateTransactionForm, setUpdateTransactionForm] = useState({});
 
   useEffect(() => {
     handleFetchTransactions();
   }, []);
 
   const handleFetchTransactions = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}transaction/get`,
-    );
-    setTransactions(response.data);
+    await fetchTransaction(setTransactions);
   };
 
   const createTransaction = async (data) => {
@@ -23,14 +22,32 @@ const Home = () => {
       `${process.env.REACT_APP_BACKEND_URL}transaction/create`,
       data,
     );
+    window.alert(response.data.message);
     handleFetchTransactions();
-    return response.data;
+  };
+
+  const updateTransaction = async (data) => {
+    const response = await axios.patch(
+      `${process.env.REACT_APP_BACKEND_URL}transaction/update/${data._id}`,
+      data,
+    );
+    window.alert(response.data.message);
+    handleFetchTransactions();
+    setUpdateTransactionForm({});
   };
 
   return (
     <div>
-      <AddTransaction createTransaction={createTransaction} />
-      <TransactionsList transactions={transactions} />
+      <AddTransaction
+        createTransaction={createTransaction}
+        updateTransaction={updateTransaction}
+        updateTransactionForm={updateTransactionForm}
+      />
+      <TransactionsList
+        transactions={transactions}
+        handleFetchTransactions={handleFetchTransactions}
+        setUpdateTransactionForm={setUpdateTransactionForm}
+      />
     </div>
   );
 };

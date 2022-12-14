@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialState = {
   amount: "",
@@ -18,23 +18,42 @@ const initialState = {
   date: dayjs(new Date()),
 };
 
-const AddTransaction = ({ createTransaction }) => {
+const AddTransaction = ({
+  createTransaction,
+  updateTransaction,
+  updateTransactionForm,
+}) => {
   const [form, setForm] = useState(initialState);
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    if (updateTransactionForm.amount !== undefined) {
+      setForm(updateTransactionForm);
+    }
+  }, [updateTransactionForm.amount]);
+
+  const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleDateChange = (newValue) => {
-    console.log("New Date Value is : ", newValue);
     setForm({ ...form, date: newValue });
   };
 
-  const handleSubmit = async (e) => {
+  const handleChange = async (e) => {
     e.preventDefault();
-    const result = await createTransaction(form);
+    updateTransactionForm.amount !== undefined
+      ? handleUpdateTransaction(e)
+      : handleCreateTransaction(e);
+  };
+
+  const handleCreateTransaction = async () => {
+    await createTransaction(form);
     setForm(initialState);
-    alert("New Transaction is now added to the Database.");
+  };
+
+  const handleUpdateTransaction = async () => {
+    await updateTransaction(form);
+    setForm(initialState);
   };
 
   return (
@@ -46,7 +65,7 @@ const AddTransaction = ({ createTransaction }) => {
         height: "90px",
       }}
     >
-      <form onSubmit={handleSubmit} autoComplete="off">
+      <form onSubmit={handleChange} autoComplete="off">
         <CardContent>
           <Box
             sx={{
@@ -64,7 +83,7 @@ const AddTransaction = ({ createTransaction }) => {
               name="amount"
               variant="outlined"
               size="large"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e)}
             />
             <TextField
               label="Description"
@@ -73,7 +92,7 @@ const AddTransaction = ({ createTransaction }) => {
               name="description"
               variant="outlined"
               size="large"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleFormChange(e)}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -83,8 +102,12 @@ const AddTransaction = ({ createTransaction }) => {
               />
             </LocalizationProvider>
 
-            <Button sx={{ width: "280px" }} type="submit" variant="contained">
-              SUBMIT
+            <Button
+              sx={{ width: "280px" }}
+              type="submit"
+              variant={updateTransactionForm.amount ? "outlined" : "contained"}
+            >
+              {updateTransactionForm.amount ? "UPDATE" : "SUBMIT"}
             </Button>
           </Box>
         </CardContent>

@@ -22,3 +22,32 @@ export const getTransactions = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    await Transaction.findOneAndDelete({
+      _id: req.params.id,
+    });
+    res
+      .status(200)
+      .json({ message: "Transaction has been deleted successfully" });
+  } catch (error) {
+    res.status(403).json({ message: error.message });
+  }
+};
+
+export const updateTransaction = async (req, res) => {
+  try {
+    await Transaction.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      { $set: req.body },
+    );
+    res
+      .status(200)
+      .json({ message: "Transaction has been updated successfully" });
+  } catch (error) {
+    res.status(403).json({ message: error.message });
+  }
+};
