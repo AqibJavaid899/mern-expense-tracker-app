@@ -1,8 +1,12 @@
-import { Box, TextField } from "@mui/material";
+import { Box, Button, Link, TextField } from "@mui/material";
 
 const LoginForm = ({ values, touched, errors, handleBlur, handleChange }) => {
   return (
-    <Box>
+    <Box
+      display="grid"
+      gridtemplatecolumns="repeat(4, 1fr)"
+      position="relative"
+    >
       <TextField
         fullWidth
         type="email"
@@ -28,6 +32,37 @@ const LoginForm = ({ values, touched, errors, handleBlur, handleChange }) => {
         onBlur={handleBlur}
         sx={{ gridColumn: "span 4", mb: "25px" }}
       />
+
+      <Button
+        type="submit"
+        sx={{
+          mt: "20px",
+          backgroundColor: "#333333",
+          color: "white",
+          padding: "10px 0px",
+          gridColumn: "span 4",
+          "&:hover": {
+            opacity: 0.9,
+            backgroundColor: "#333333",
+          },
+        }}
+      >
+        LOGIN
+      </Button>
+
+      <Box mt="16px">
+        <Link
+          href="/register"
+          style={{
+            cursor: "pointer",
+            fontSize: "14px",
+            position: "absolute",
+            right: "0",
+          }}
+        >
+          Do not have an account? Sign up
+        </Link>
+      </Box>
     </Box>
   );
 };

@@ -4,6 +4,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 import transactionRoutes from "./routes/Transaction.js";
+import authenticationRoutes from "./routes/Authentication.js";
+
 import { db_connect } from "./database/connect.js";
 
 // Middlewares
@@ -17,6 +19,7 @@ await db_connect();
 
 // Routes Middlewares
 app.use("/api/transaction", transactionRoutes);
+app.use("/api/authentication", authenticationRoutes);
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

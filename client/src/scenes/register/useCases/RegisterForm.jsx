@@ -1,4 +1,4 @@
-import { Box, TextField, useMediaQuery } from "@mui/material";
+import { Box, Button, Link, TextField, useMediaQuery } from "@mui/material";
 
 const RegisterForm = ({
   values,
@@ -10,7 +10,11 @@ const RegisterForm = ({
   const isNonMobile = useMediaQuery("(min-width: 600px)");
 
   return (
-    <Box display="grid" gridtemplatecolumns="repeat(4, 1fr)">
+    <Box
+      display="grid"
+      gridtemplatecolumns="repeat(4, 1fr)"
+      position="relative"
+    >
       <TextField
         type="text"
         label="First Name*"
@@ -64,6 +68,37 @@ const RegisterForm = ({
         onBlur={handleBlur}
         sx={{ gridColumn: "span 4", mb: "25px" }}
       />
+
+      <Button
+        type="submit"
+        sx={{
+          mt: "20px",
+          backgroundColor: "#333333",
+          color: "white",
+          padding: "10px 0px",
+          gridColumn: "span 4",
+          "&:hover": {
+            opacity: 0.9,
+            backgroundColor: "#333333",
+          },
+        }}
+      >
+        REGISTER
+      </Button>
+
+      <Box mt="16px">
+        <Link
+          href="/login"
+          style={{
+            cursor: "pointer",
+            fontSize: "14px",
+            position: "absolute",
+            right: 0,
+          }}
+        >
+          Already have an account? Sign in
+        </Link>
+      </Box>
     </Box>
   );
 };

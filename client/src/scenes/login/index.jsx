@@ -1,12 +1,7 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Link,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Card, CardContent, Typography, useMediaQuery } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
 import { Formik } from "formik";
 import * as yup from "yup";
 
@@ -14,9 +9,19 @@ import LoginForm from "./useCases/LoginForm";
 
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const navigate = useNavigate();
 
-  const handleLogin = (values, actions) => {
-    console.log("\n\nLogin Form values are : ", values);
+  const handleLogin = async (values, actions) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}authentication/login`,
+        values,
+      );
+      navigate("/");
+      Cookies.set("token", response.data.token);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return (
@@ -53,7 +58,7 @@ const Login = () => {
           setFieldValue,
         }) => (
           <form onSubmit={handleSubmit} autoComplete="off">
-            <CardContent display="grid" gridtemplatecolumns="repeat(4, 1fr)">
+            <CardContent>
               <LoginForm
                 values={values}
                 touched={touched}
@@ -61,34 +66,6 @@ const Login = () => {
                 handleBlur={handleBlur}
                 handleChange={handleChange}
               />
-              <Button
-                type="submit"
-                sx={{
-                  mt: "20px",
-                  backgroundColor: "#333333",
-                  color: "white",
-                  padding: "10px 0px",
-                  width: "100%",
-                  "&:hover": {
-                    opacity: 0.9,
-                    backgroundColor: "#333333",
-                  },
-                }}
-              >
-                LOGIN
-              </Button>
-
-              <Box display="flex" justifyContent="flex-end" mt="16px">
-                <Link
-                  href="/register"
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "14px",
-                  }}
-                >
-                  Already have an account? Sign up
-                </Link>
-              </Box>
             </CardContent>
           </form>
         )}

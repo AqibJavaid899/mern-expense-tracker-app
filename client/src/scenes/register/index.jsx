@@ -1,22 +1,25 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Link,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Card, CardContent, Typography, useMediaQuery } from "@mui/material";
+import axios from "axios";
 import { Formik } from "formik";
+import { useNavigate } from "react-router";
 import * as yup from "yup";
 
 import RegisterForm from "./useCases/RegisterForm";
 
 const Register = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const navigate = useNavigate();
 
-  const handleRegister = (values, actions) => {
-    console.log("\n\nRegister Form values are : ", values);
+  const handleRegister = async (values, actions) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}authentication/register`,
+        values,
+      );
+      navigate("/login");
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return (
@@ -61,34 +64,6 @@ const Register = () => {
                 handleBlur={handleBlur}
                 handleChange={handleChange}
               />
-              <Button
-                type="submit"
-                sx={{
-                  mt: "20px",
-                  backgroundColor: "#333333",
-                  color: "white",
-                  padding: "10px 0px",
-                  width: "100%",
-                  "&:hover": {
-                    opacity: 0.9,
-                    backgroundColor: "#333333",
-                  },
-                }}
-              >
-                REGISTER
-              </Button>
-
-              <Box display="flex" justifyContent="flex-end" mt="16px">
-                <Link
-                  href="/login"
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "14px",
-                  }}
-                >
-                  Already have an account? Sign in
-                </Link>
-              </Box>
             </CardContent>
           </form>
         )}
