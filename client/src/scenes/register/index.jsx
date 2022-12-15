@@ -10,13 +10,13 @@ import {
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import LoginForm from "./useCases/LoginForm";
+import RegisterForm from "./useCases/RegisterForm";
 
-const Login = () => {
+const Register = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
 
-  const handleLogin = (values, actions) => {
-    console.log("\n\nLogin Form values are : ", values);
+  const handleRegister = (values, actions) => {
+    console.log("\n\nRegister Form values are : ", values);
   };
 
   return (
@@ -24,7 +24,7 @@ const Login = () => {
       sx={{
         width: !isNonMobile ? "70%" : "45%",
         height: "100%",
-        margin: "100px auto",
+        margin: !isNonMobile ? "60px auto" : "100px auto",
         padding: "30px 10px",
       }}
     >
@@ -36,12 +36,12 @@ const Login = () => {
           mb: "20px",
         }}
       >
-        LOGIN FORM
+        REGISTRATION FORM
       </Typography>
       <Formik
         initialValues={initialValues}
-        validationSchema={loginSchema}
-        onSubmit={handleLogin}
+        validationSchema={registerSchema}
+        onSubmit={handleRegister}
       >
         {({
           values,
@@ -53,8 +53,8 @@ const Login = () => {
           setFieldValue,
         }) => (
           <form onSubmit={handleSubmit} autoComplete="off">
-            <CardContent display="grid" gridtemplatecolumns="repeat(4, 1fr)">
-              <LoginForm
+            <CardContent>
+              <RegisterForm
                 values={values}
                 touched={touched}
                 errors={errors}
@@ -75,18 +75,18 @@ const Login = () => {
                   },
                 }}
               >
-                LOGIN
+                REGISTER
               </Button>
 
               <Box display="flex" justifyContent="flex-end" mt="16px">
                 <Link
-                  href="/register"
+                  href="/login"
                   style={{
                     cursor: "pointer",
                     fontSize: "14px",
                   }}
                 >
-                  Already have an account? Sign up
+                  Already have an account? Sign in
                 </Link>
               </Box>
             </CardContent>
@@ -98,11 +98,15 @@ const Login = () => {
 };
 
 const initialValues = {
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
 };
 
-const loginSchema = yup.object().shape({
+const registerSchema = yup.object().shape({
+  firstName: yup.string().required("First Name field is required"),
+  lastName: yup.string().required("Last Name field is required"),
   email: yup.string().required("email field is required"),
   password: yup
     .string()
@@ -110,4 +114,4 @@ const loginSchema = yup.object().shape({
     .min(6, "password length must be more than 6 digits"),
 });
 
-export default Login;
+export default Register;

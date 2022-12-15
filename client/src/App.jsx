@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import Layout from "./scenes/global/Layout";
 import Home from "./scenes/home";
 import Login from "./scenes/login";
+import Register from "./scenes/register";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
       </Router>

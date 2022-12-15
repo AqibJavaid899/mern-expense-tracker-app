@@ -18,9 +18,14 @@ const Navbar = () => {
               Expense Manager
             </Button>
           </Box>
-          <Button onClick={() => navigate("/login")} color="inherit">
-            Login
-          </Button>
+          <Box display="flex" gap="16px">
+            <Button onClick={() => navigate("/login")} color="inherit">
+              Login
+            </Button>
+            <Button onClick={() => navigate("/register")} color="inherit">
+              Register
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
