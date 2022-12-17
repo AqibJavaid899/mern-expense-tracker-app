@@ -47,7 +47,12 @@ export const loginUser = async (req, res) => {
         .status(406)
         .json({ message: "Email or Password is incorrect." });
 
-    const token = jwt.sign({ id: userExist._id }, process.env.JWT_SECRET_KEY);
+    const payload = {
+      id: userExist._id,
+      email: userExist.email,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
     res.status(200).json({ message: "Successfully logged in the user", token });
   } catch (error) {
     res.status(406).json({ message: error.message });

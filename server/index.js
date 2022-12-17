@@ -2,9 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
+import passport from "passport";
 
 import transactionRoutes from "./routes/Transaction.js";
 import authenticationRoutes from "./routes/Authentication.js";
+import passportConfiguration from "./config/passport.js";
 
 import { db_connect } from "./database/connect.js";
 
@@ -13,6 +15,8 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(passport.initialize());
+passportConfiguration(passport);
 
 // DB Connection
 await db_connect();
