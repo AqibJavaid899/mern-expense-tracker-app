@@ -1,14 +1,19 @@
 import { Box, AppBar, Button, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+
+import { logout } from "../state/slices/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authToken = Cookies.get("token");
 
   const handleLogout = () => {
     Cookies.remove("token");
+    dispatch(logout());
     navigate("/login");
   };
 

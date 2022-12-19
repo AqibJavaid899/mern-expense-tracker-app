@@ -4,21 +4,25 @@ import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
 
 import LoginForm from "./useCases/LoginForm";
+import { getUser } from "../../state/slices/authSlice";
 
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleLogin = async (values, actions) => {
+  const handleLogin = async (values, _actions) => {
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}authentication/login`,
         values,
       );
+      Cookies.set("token", data.token);
+      dispatch(getUser(data));
       navigate("/");
-      Cookies.set("token", response.data.token);
     } catch (error) {
       console.error(error.message);
     }

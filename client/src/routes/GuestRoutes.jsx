@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const GuestRoutes = ({ children }) => {
-  const token = Cookies.get("token");
+  const auth = useSelector((state) => state.auth);
 
-  return <div>{!token ? children : <Navigate to="/" replace={true} />}</div>;
+  return !auth.isAuthenticated ? children : <Navigate to="/" replace={true} />;
 };
 
 export default GuestRoutes;

@@ -7,8 +7,10 @@ export const createTransaction = async (req, res) => {
       ...transaction,
       amount: parseInt(transaction.amount),
     });
-    const result = await newTransaction.save();
-    res.status(201).json(result);
+    await newTransaction.save();
+    res
+      .status(201)
+      .json({ message: "Transaction has been created successfully" });
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
