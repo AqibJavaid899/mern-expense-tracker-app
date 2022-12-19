@@ -53,13 +53,11 @@ export const loginUser = async (req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
-    res
-      .status(200)
-      .json({
-        message: "Successfully logged in the user",
-        token,
-        user: userExist,
-      });
+    res.status(200).json({
+      message: "Successfully logged in the user",
+      token,
+      user: userExist,
+    });
   } catch (error) {
     res.status(406).json({ message: error.message });
   }

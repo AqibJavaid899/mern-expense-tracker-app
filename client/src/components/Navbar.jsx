@@ -1,4 +1,4 @@
-import { Box, AppBar, Button, Toolbar } from "@mui/material";
+import { Box, AppBar, Button, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { logout } from "../state/slices/authSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -32,11 +32,12 @@ const Navbar = () => {
             </Button>
           </Box>
           <Box display="flex" gap="16px">
-            {isAuthenticated ? (
-              <Box>
+            {auth.isAuthenticated ? (
+              <Box display="flex" alignItems="center" gap="20px">
                 <Button onClick={() => handleLogout()} color="inherit">
                   Logout
                 </Button>
+                <Button color="inherit">{`${auth.user.firstName} ${auth.user.lastName}`}</Button>
               </Box>
             ) : (
               <Box>

@@ -4,6 +4,7 @@ export const createTransaction = async (req, res) => {
   try {
     const transaction = req.body;
     const newTransaction = new Transaction({
+      userId: req.user._id,
       ...transaction,
       amount: parseInt(transaction.amount),
     });
@@ -18,7 +19,9 @@ export const createTransaction = async (req, res) => {
 
 export const getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find({}).sort({ createdAt: -1 });
+    const transactions = await Transaction.find({ userId: req.user._id }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(transactions);
   } catch (error) {
     res.status(404).json({ message: error.message });

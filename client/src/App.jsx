@@ -8,12 +8,13 @@ import Router from "./Router";
 import { getUser } from "./state/slices/authSlice";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const token = Cookies.get("token");
   const dispatch = useDispatch();
 
   const fetchUser = async () => {
+    setIsLoading(true);
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}user/get`,
       {

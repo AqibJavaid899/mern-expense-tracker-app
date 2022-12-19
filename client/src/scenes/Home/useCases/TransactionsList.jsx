@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import { dateFormat } from "../../../utils/helperFunctions";
 
@@ -26,6 +27,8 @@ const TransactionsList = ({
   handleFetchTransactions,
   setUpdateTransactionForm,
 }) => {
+  const token = Cookies.get("token");
+
   const handleUpdateTransaction = (transaction) => {
     setUpdateTransactionForm(transaction);
   };
@@ -34,6 +37,11 @@ const TransactionsList = ({
     if (window.confirm("Are you sure to delete the Transaction?")) {
       const response = await axios.delete(
         `${process.env.REACT_APP_BACKEND_URL}transaction/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       reloadTransactions(response);
     }
