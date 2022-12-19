@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, Typography, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -10,11 +11,14 @@ import LoginForm from "./useCases/LoginForm";
 import { getUser } from "../../state/slices/authSlice";
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogin = async (values, _actions) => {
+    setIsLoading(true);
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}authentication/login`,
@@ -22,9 +26,11 @@ const Login = () => {
       );
       Cookies.set("token", data.token);
       dispatch(getUser(data));
+      setIsLoading(false);
       navigate("/");
     } catch (error) {
       console.error(error.message);
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +75,7 @@ const Login = () => {
                 errors={errors}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
+                isLoading={isLoading}
               />
             </CardContent>
           </form>

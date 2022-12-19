@@ -1,6 +1,15 @@
-import { Box, Button, Link, TextField } from "@mui/material";
+import { Box, Link, TextField } from "@mui/material";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { LoadingButton } from "@mui/lab";
 
-const LoginForm = ({ values, touched, errors, handleBlur, handleChange }) => {
+const LoginForm = ({
+  values,
+  touched,
+  errors,
+  handleBlur,
+  handleChange,
+  isLoading,
+}) => {
   return (
     <Box
       display="grid"
@@ -33,8 +42,11 @@ const LoginForm = ({ values, touched, errors, handleBlur, handleChange }) => {
         sx={{ gridColumn: "span 4", mb: "25px" }}
       />
 
-      <Button
+      <LoadingButton
         type="submit"
+        loading={isLoading}
+        endIcon={<LockOpenIcon />}
+        variant="contained"
         sx={{
           mt: "20px",
           backgroundColor: "#333333",
@@ -48,7 +60,7 @@ const LoginForm = ({ values, touched, errors, handleBlur, handleChange }) => {
         }}
       >
         LOGIN
-      </Button>
+      </LoadingButton>
 
       <Box mt="16px">
         <Link

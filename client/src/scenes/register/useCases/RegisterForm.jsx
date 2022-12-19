@@ -1,4 +1,6 @@
-import { Box, Button, Link, TextField, useMediaQuery } from "@mui/material";
+import { Box, Link, TextField, useMediaQuery } from "@mui/material";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import { LoadingButton } from "@mui/lab";
 
 const RegisterForm = ({
   values,
@@ -6,6 +8,7 @@ const RegisterForm = ({
   errors,
   handleBlur,
   handleChange,
+  isLoading,
 }) => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
 
@@ -69,8 +72,11 @@ const RegisterForm = ({
         sx={{ gridColumn: "span 4", mb: "25px" }}
       />
 
-      <Button
+      <LoadingButton
         type="submit"
+        loading={isLoading}
+        endIcon={<HowToRegIcon />}
+        variant="contained"
         sx={{
           mt: "20px",
           backgroundColor: "#333333",
@@ -84,7 +90,7 @@ const RegisterForm = ({
         }}
       >
         REGISTER
-      </Button>
+      </LoadingButton>
 
       <Box mt="16px">
         <Link

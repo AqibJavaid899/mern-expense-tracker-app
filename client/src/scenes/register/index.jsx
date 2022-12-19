@@ -1,22 +1,26 @@
 import { Card, CardContent, Typography, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { Formik } from "formik";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as yup from "yup";
 
 import RegisterForm from "./useCases/RegisterForm";
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const navigate = useNavigate();
 
   const handleRegister = async (values, actions) => {
+    setIsLoading(true);
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}authentication/register`,
         values,
       );
       navigate("/login");
+      setIsLoading(false);
     } catch (error) {
       console.error(error.message);
     }
@@ -63,6 +67,7 @@ const Register = () => {
                 errors={errors}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
+                isLoading={isLoading}
               />
             </CardContent>
           </form>
