@@ -5,6 +5,7 @@ const transactionSchema = mongoose.Schema(
     userId: mongoose.Types.ObjectId,
     amount: Number,
     description: String,
+    categoryId: mongoose.Types.ObjectId,
     date: {
       type: Date,
       default: new Date(),

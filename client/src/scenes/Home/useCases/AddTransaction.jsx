@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Button,
   Card,
@@ -5,17 +7,20 @@ import {
   CardContent,
   TextField,
   Box,
+  Autocomplete,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+
+import { convertCategoryIdToValue } from "../../../utils/helperFunctions";
 
 const initialState = {
   amount: "",
   description: "",
   date: dayjs(new Date()),
+  categoryId: "",
 };
 
 const AddTransaction = ({
@@ -24,6 +29,8 @@ const AddTransaction = ({
   updateTransactionForm,
 }) => {
   const [form, setForm] = useState(initialState);
+
+  const { categories } = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (updateTransactionForm.amount !== undefined) {
@@ -54,6 +61,10 @@ const AddTransaction = ({
   const handleUpdateTransaction = async () => {
     await updateTransaction(form);
     setForm(initialState);
+  };
+
+  const handleCategoryChange = (event, newValue) => {
+    setForm({ ...form, categoryId: newValue._id });
   };
 
   return (
@@ -101,6 +112,17 @@ const AddTransaction = ({
                 renderInput={(params) => <TextField fullWidth {...params} />}
               />
             </LocalizationProvider>
+
+            <Autocomplete
+              fullWidth
+              value={convertCategoryIdToValue(form.categoryId, categories)}
+              onChange={handleCategoryChange}
+              id="controllable-states-demo"
+              options={categories}
+              renderInput={(params) => (
+                <TextField {...params} label="Categories" />
+              )}
+            />
 
             <Button
               sx={{ width: "280px" }}

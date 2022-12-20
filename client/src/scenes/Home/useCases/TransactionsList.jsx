@@ -11,10 +11,14 @@ import {
 import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import { dateFormat } from "../../../utils/helperFunctions";
+import {
+  convertCategoryIdToValue,
+  dateFormat,
+} from "../../../utils/helperFunctions";
 
 const TableHeader = styled(TableCell)({
   backgroundColor: "#2196f3",
@@ -28,6 +32,7 @@ const TransactionsList = ({
   setUpdateTransactionForm,
 }) => {
   const token = Cookies.get("token");
+  const { user } = useSelector((state) => state.auth);
 
   const handleUpdateTransaction = (transaction) => {
     setUpdateTransactionForm(transaction);
@@ -54,6 +59,11 @@ const TransactionsList = ({
     }
   };
 
+  const categoryNameFromId = (id) => {
+    const category = convertCategoryIdToValue(id, user?.categories);
+    return category.label ?? "NA";
+  };
+
   return (
     <TableContainer sx={{ width: "75%", margin: "0 auto" }} component={Paper}>
       <Table size="small">
@@ -62,6 +72,7 @@ const TransactionsList = ({
           <TableRow>
             <TableHeader align="center">Transaction ID</TableHeader>
             <TableHeader align="center">Amount (USD)</TableHeader>
+            <TableHeader align="center">Category</TableHeader>
             <TableHeader align="center">Description</TableHeader>
             <TableHeader align="center">Date</TableHeader>
             <TableHeader align="center">Actions</TableHeader>
@@ -76,6 +87,9 @@ const TransactionsList = ({
                 {transaction._id}
               </TableCell>
               <TableCell align="center">{transaction.amount}</TableCell>
+              <TableCell align="center">
+                {categoryNameFromId(transaction.categoryId)}
+              </TableCell>
               <TableCell align="center">{transaction.description}</TableCell>
               <TableCell align="center">
                 {dateFormat(transaction.date)}

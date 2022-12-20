@@ -20,3 +20,7 @@ export const fetchTransaction = async (setTransactions) => {
     setTransactions(response.data);
   }
 };
+
+export const convertCategoryIdToValue = (id, categories) => {
+  return categories.find((category) => category._id === id) ?? "";
+};
