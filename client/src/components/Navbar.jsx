@@ -1,6 +1,7 @@
-import { Box, AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { Box, AppBar, Button, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 
@@ -32,6 +33,16 @@ const Navbar = () => {
             </Button>
           </Box>
           <Box display="flex" gap="16px">
+            <Button
+              color="inherit"
+              sx={{ fontSize: "14px" }}
+              startIcon={
+                <AddCircleOutlineOutlinedIcon sx={{ marginRight: "8px" }} />
+              }
+              onClick={() => navigate("/category")}
+            >
+              Add Category
+            </Button>
             {auth.isAuthenticated ? (
               <Box display="flex" alignItems="center" gap="20px">
                 <Button onClick={() => handleLogout()} color="inherit">

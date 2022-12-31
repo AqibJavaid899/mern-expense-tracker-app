@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { InfinitySpin } from "react-loader-spinner";
 
 import Router from "./Router";
-import { getUser } from "./state/slices/authSlice";
+import { setUser } from "./state/slices/authSlice";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ function App() {
 
     if (response.ok) {
       const data = await response.json();
-      dispatch(getUser(data));
+      dispatch(setUser(data));
     }
     setIsLoading(false);
   };

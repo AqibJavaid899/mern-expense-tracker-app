@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { useDispatch } from "react-redux";
 
 import LoginForm from "./useCases/LoginForm";
-import { getUser } from "../../state/slices/authSlice";
+import { setUser } from "../../state/slices/authSlice";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ const Login = () => {
         values,
       );
       Cookies.set("token", data.token);
-      dispatch(getUser(data));
+      dispatch(setUser(data));
       setIsLoading(false);
       navigate("/");
     } catch (error) {

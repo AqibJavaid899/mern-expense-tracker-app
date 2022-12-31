@@ -4,6 +4,7 @@ import Layout from "./scenes/global/Layout";
 import Home from "./scenes/home";
 import Login from "./scenes/login";
 import Register from "./scenes/register";
+import Category from "./scenes/category";
 import { GuestRoutes, ProtectedRoutes } from "./routes";
 
 const AllRoutes = () => {
@@ -16,6 +17,14 @@ const AllRoutes = () => {
             element={
               <ProtectedRoutes>
                 <Home />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/category"
+            element={
+              <ProtectedRoutes>
+                <Category />
               </ProtectedRoutes>
             }
           />
