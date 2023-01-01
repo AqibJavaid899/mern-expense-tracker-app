@@ -24,7 +24,7 @@ const TableHeader = styled(TableCell)({
   padding: "10px 0px",
 });
 
-const TransactionsList = () => {
+const TransactionsList = ({ setUpdateCategoryForm }) => {
   const token = Cookies.get("token");
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -41,6 +41,10 @@ const TransactionsList = () => {
       );
       response.statusText === "OK" && updateStore(categoryId);
     }
+  };
+
+  const handleEditCategory = (category) => {
+    setUpdateCategoryForm(category);
   };
 
   const updateStore = (categoryId) => {
@@ -75,7 +79,7 @@ const TransactionsList = () => {
               <TableCell align="center">{category.icon}</TableCell>
               {/* Action Buttons */}
               <TableCell align="center">
-                <IconButton>
+                <IconButton onClick={() => handleEditCategory(category)}>
                   <EditIcon color="primary" />
                 </IconButton>
                 <IconButton onClick={() => handleDeleteCategory(category._id)}>

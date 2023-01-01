@@ -12,6 +12,7 @@ import {
 import Cookies from "js-cookie";
 
 import { fetchSignedInUser } from "../../../utils/helperFunctions";
+import { setUser } from "../../../state/slices/authSlice";
 
 const initialState = {
   label: "",
@@ -20,7 +21,11 @@ const initialState = {
 
 const icons = ["User"];
 
-const AddCategory = ({ updateCategoryForm, createNewCategory }) => {
+const AddCategory = ({
+  updateCategoryForm,
+  createNewCategory,
+  updateCategory,
+}) => {
   const [form, setForm] = useState(initialState);
 
   const token = Cookies.get("token");
@@ -28,11 +33,11 @@ const AddCategory = ({ updateCategoryForm, createNewCategory }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (updateTransactionForm.amount !== undefined) {
-  //     setForm(updateTransactionForm);
-  //   }
-  // }, [updateTransactionForm.amount]);
+  useEffect(() => {
+    if (updateCategoryForm._id !== undefined) {
+      setForm(updateCategoryForm);
+    }
+  }, [updateCategoryForm._id]);
 
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -40,7 +45,6 @@ const AddCategory = ({ updateCategoryForm, createNewCategory }) => {
 
   const handleChange = async (e) => {
     e.preventDefault();
-    console.log(form);
     updateCategoryForm.label !== undefined
       ? handleUpdateTransaction(form)
       : handleCreateTransaction(form);
@@ -55,14 +59,25 @@ const AddCategory = ({ updateCategoryForm, createNewCategory }) => {
   };
 
   const handleUpdateTransaction = async () => {
-    // await updateTransaction(form);
-    // setForm(initialState);
+    const response = await updateCategory(form);
+    updateStore(response, form);
   };
 
-  // const updateStore = (updatedUser) => {
-  //   dispatch(setUser({ user: updatedUser }));
-  //   setForm(initialState);
-  // };
+  const updateStore = (response, form) => {
+    if (response.statusText === "OK") {
+      window.alert(response.data.message);
+      setForm(initialState);
+
+      const updatedCategories = user.categories.map((category) =>
+        category._id !== form._id ? category : form,
+      );
+      const updatedUser = {
+        ...user,
+        categories: updatedCategories,
+      };
+      dispatch(setUser({ user: updatedUser }));
+    }
+  };
 
   const handleCategoryChange = (event, newValue) => {
     setForm({ ...form, icon: newValue });

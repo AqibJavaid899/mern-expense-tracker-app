@@ -27,16 +27,35 @@ const Category = () => {
       console.error(error.message);
     }
   };
+
+  const updateCategory = async (form) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_URL}/category/update/${form._id}`,
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <Box>
       <Box>
         <AddCategory
           updateCategoryForm={updateCategoryForm}
           createNewCategory={createNewCategory}
+          updateCategory={updateCategory}
         />
       </Box>
       <Box>
-        <CategoryList />
+        <CategoryList setUpdateCategoryForm={setUpdateCategoryForm} />
       </Box>
     </Box>
   );
