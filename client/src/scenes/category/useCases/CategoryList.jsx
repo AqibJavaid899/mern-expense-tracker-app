@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
+
 import { setUser } from "../../../state/slices/authSlice";
 
 const TableHeader = styled(TableCell)({
@@ -38,11 +39,11 @@ const TransactionsList = () => {
           },
         },
       );
-      response.statusText === "OK" && refreshStore(categoryId);
+      response.statusText === "OK" && updateStore(categoryId);
     }
   };
 
-  const refreshStore = (categoryId) => {
+  const updateStore = (categoryId) => {
     const updatedCategories = user.categories.filter(
       (category) => category._id !== categoryId,
     );

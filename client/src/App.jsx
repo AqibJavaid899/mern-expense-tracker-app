@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { InfinitySpin } from "react-loader-spinner";
 
 import Router from "./Router";
-import { setUser } from "./state/slices/authSlice";
+import { fetchSignedInUser } from "./utils/helperFunctions";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,19 +15,8 @@ function App() {
 
   const fetchUser = async () => {
     setIsLoading(true);
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}user/get`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    const response = await fetchSignedInUser(token, dispatch);
 
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(setUser(data));
-    }
     setIsLoading(false);
   };
 
